@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Weekend Food Foot{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <!-- Ajout de Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Menu de bureau -->
+    <nav class="navbar navbar-expand-lg navbar-custom bg-custom fixed-top d-none d-md-flex">
+        <div class="container my-container">
+            <!-- Zone Langues à gauche -->
+            <div class="navbar-nav me-auto">
+                <a class="nav-link nav-link-certificates" href="{% url 'home' %}">Restaurant</a>
+                <a class="nav-link nav-link-certificates" href="{% url 'foods' %}">Menu</a>
+                <a class="nav-link nav-link-certificates" href="{% url 'contact' %}">Contact</a>
+            </div>
+    
+            <a class="navbar-brand mx-auto" href="{% url 'home' %}">
+                <img src="{% static 'images/wff-removebg-preview.png' %}" alt="Logo" class="img-fluid">
+            </a>
+    
+            <div class="navbar-nav ms-auto">
+                {% if user.is_authenticated %}
+                    <a class="nav-link nav-link-certificates" href="{% url 'account' %}">My Account</a>
+                    <a class="nav-link nav-link-certificates" href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a class="nav-link nav-link-certificates" href="{% url 'login' %}">Login</a>
+                    <a class="nav-link nav-link-certificates" href="{% url 'signup' %}">Sign Up</a>
+                {% endif %}
+                <a class="nav-link btn btn-primary btn-certificates" href="{% url 'reserve_table' %}">Reserve</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Menu mobile -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top d-md-none">
+        <div class="container-fluid d-flex justify-content-between" style="flex-wrap: unset!important;">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/wff-removebg-preview.png' %}" alt="Logo" class="img-fluid lit-img">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleMenu()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse popup-menu" id="mobileNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'home' %}">Restaurant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'foods' %}">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account' %}">My Account</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'login' %}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary btn-certificates" href="{% url 'reserve_table' %}">Reserve</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+    <main class="flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+ 
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row flex-footer">
+                <div class="col-12 col-md-3 footer-section">
+                    <h5>SITEMAP</h5>
+                    <ul>
+                        <li><a href="{% url 'about' %}">About</a></li>
+                        <li><a href="{% url 'foods' %}">Menu</a></li>
+                        <li><a href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-12 col-md-3 footer-section">
+                    <h5>LOCATION</h5>
+                    <p>Full address here</p>
+                </div>
+
+                <div class="col-12 col-md-3 footer-section">
+                    <h5>RESERVATIONS</h5>
+                    <a href="{% url 'reserve_table' %}" class="btn btn-outline-secondary">MAKE A RESERVATION</a>
+                </div>
+                
+                <div class="col-12 col-md-3 footer-section">
+                    <h5>NETWORK</h5>
+                    <div class="social-media">
+                        <a href="https://www.facebook.com/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.twitter.com/" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.instagram.com/" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="https://www.youtube.com/" target="_blank" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 text-center">
+                    © WEEKEND FOOD FOOT 2024. ALL RIGHTS RESERVED.
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="{% static 'js/activeLinkHighlighter.js' %}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("mobileNavbar");
+        var overlay = document.getElementById("overlay");
+        if (menu.style.display === "block") {
+            menu.style.display = "none";
+            overlay.style.display = "none";
+        } else {
+            menu.style.display = "block";
+            overlay.style.display = "block";
+        }
+    }
+</script>

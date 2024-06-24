@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Annuler la réservation</h3>
+    <p>Êtes-vous sûr de vouloir annuler votre réservation pour la table : {{ reservation.table_type.name }} le {{ reservation.date|date:"d M Y" }} ({{ reservation.date|date:"l" }}) ?</p>
+    <form method="post" action="">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Oui, annuler</button>
+        <a href="{% url 'account' %}" class="btn btn-secondary">Non, revenir</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <h3>My Reservations</h3>
+    <div class="row">
+        {% for reservation in reservations %}
+        <div class="col-md-4 mb-4">
+            <div class="card" id="reservation-{{ reservation.id }}">
+                <div class="card-body">
+                    <h5 class="card-title">Table: {{ reservation.table_type.name }}</h5>
+                    <p class="card-text">Date: {{ reservation.date|date:"d M Y" }} ({{ reservation.date|date:"l" }})</p>
+                    <p class="card-text">Start Time: {{ reservation.time|time:"H:i" }}</p>
+                    <p class="card-text">End Time: {{ reservation.end_time|time:"H:i" }}</p>
+                    <p class="card-text">
+                        Status: <span class="{{ reservation.status_color }}">{{ reservation.get_status_display }}</span>
+                    </p>
+                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#cancelModal" data-reservation-id="{{ reservation.id }}">
+                        Cancel
+                    </button>
+                    <p class="text-danger d-none" id="cancel-message-{{ reservation.id }}">Réservation annulée</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                No reservations made.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="container my-5">
+    <h3>Mes Infos</h3>
+    <ul>
+        <li>Nom: {{ user.username }}</li>
+        <li>Email: {{ user.email }}</li>
+        <li>
+            <a href="{% url 'password_change' %}">Modifier le mot de passe</a>
+        </li>
+    </ul>
+    <form action="{% url 'account_delete' %}" method="post">
+        {% csrf_token %}
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Supprimer mon compte</button>
+    </form>
+</div>
+
+<!-- Modal reservation -->
+<div class="modal fade" id="cancelModal" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelModalLabel">Confirmation d'annulation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir annuler cette réservation ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                <form id="cancelForm" method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Confirmer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal suppression compte -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir supprimer votre compte ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <form id="deleteForm" method="post" action="{% url 'account_delete' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // Mettre à jour l'action du formulaire lors de l'affichage du modal
+        $('#cancelModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var reservationId = button.data('reservation-id'); // Extract info from data-* attributes
+            var formAction = "{% url 'cancel_reservation' 0 %}".slice(0, -2) + reservationId + "/"; // Construct the URL for the form action
+            var modal = $(this);
+            modal.find('#cancelForm').attr('action', formAction); // Update the form action
+        });
+
+        // Gestion de la soumission du formulaire via AJAX
+        $('#cancelForm').on('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting via the browser
+            var form = $(this);
+            var actionUrl = form.attr('action');
+            $.ajax({
+                type: 'POST',
+                url: actionUrl,
+                data: form.serialize(), // Serialize the form data
+                success: function (response) {
+                    // Hide the modal
+                    $('#cancelModal').modal('hide');
+                    // Show the cancel message on the reservation card
+                    var reservationId = actionUrl.split('/').slice(-2, -1)[0];
+                    $('#cancel-message-' + reservationId).removeClass('d-none');
+                    // Optionally, disable the cancel button
+                    $('button[data-reservation-id="' + reservationId + '"]').prop('disabled', true);
+                },
+                error: function (xhr, status, error) {
+                    // Handle the error
+                    console.error(error);
+                    alert('Une erreur est survenue lors de l\'annulation de la réservation.');
+                }
+            });
+        });
+    });
+
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var form = $(this).find('form');
+        var actionUrl = form.attr('action');
+        var newActionUrl = actionUrl.slice(0, -1) + "{{ user.id }}"; // Utiliser l'ID de l'utilisateur pour la suppression
+        form.attr('action', newActionUrl);
+    });
+</script>
+
+{% endblock %}

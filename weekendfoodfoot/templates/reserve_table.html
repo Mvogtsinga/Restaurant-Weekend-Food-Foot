@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if messages %}
+    <div class="alert alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        <div {% if message.tags %}class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+        {% endfor %}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+        {% for table in tables %}
+        <div class="col">
+            <div class="card h-100 card_style">
+                <img src="{% static table.image_path %}" class="card-img-top" alt="Image de la table {{ table.name }}" style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ table.get_name_display }}</h5>
+                    <p class="card-text">{{ table.description }} ({{ table.seats }} places)</p>
+                    <p class="card-text">Prix: {{ table.price }} €</p>
+
+                    {% if table.is_available %}
+                    
+                    <p class="card-text text-danger">Non disponible</p>
+                    {% else %}
+                    <p class="card-text text-success">Disponible</p>
+                    
+                    {% endif %}
+
+                    <form action="{% url 'reserve_table' %}" method="post" class="mt-auto"> 
+                        {% csrf_token %}
+                        <input type="hidden" name="table_type" value="{{ table.id }}">
+                        <div class="mb-3">
+                            <label for="date-{{ forloop.counter }}" class="form-label">Date de réservation :</label>
+                            <input id="date-{{ forloop.counter }}" type="date" name="date" min="{{ default_date }}" value="{{ request.POST.date|default:default_date }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="time-{{ forloop.counter }}" class="form-label">Heure de réservation :</label>
+                            <input id="time-{{ forloop.counter }}" type="time" name="time" value="{{ request.POST.time|default:'12:00' }}" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration-{{ forloop.counter }}" class="form-label">Durée de réservation (2h max) :</label>
+                            <input id="duration-{{ forloop.counter }}" type="number" name="duration" min="1" max="2" value="{{ request.POST.duration|default:2 }}" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-readmore">Réserver</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

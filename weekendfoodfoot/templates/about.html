@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}   
+<!-- Section 2 -->
+<div class="section-bg-6">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'images/2151208273.jpg' %}" alt="wff" class="img-fluid d-block d-md-none full-img" />
+            </div>
+            <div class="col-md-6 sub-section-2">
+                <div class="text-black p-3 d-flex flex-column justify-content-center align-items-start">
+                    <h1 class="text-center my-4">Qui sommes nous?</h1>
+                    <p class="text-justify mb-4">Weekend Food Foot est la création du grand groupe de restauration Camerounais Fink et du chef exécutif AK. L'un des restaurants les plus célèbres du pays, Quay a reçu trois chapeaux dans le Good Food Guide pendant 22 années consécutives.
+                        Le restaurant est un espace organique qui reflète la cuisine inspirée de la nature de Peter Gilmore. L’interaction des textures et des couleurs apporte de la vie et un dynamisme qui embrasse la place du restaurant dans le cercle vestimentaire du port de Sydney. Une ode au paysage australien, du vaste fond océanique à l'écorce craquelée d'un arbre à écorce de papier, chaque détail de fond en comble a été soigneusement étudié.
+                    </p>
+                </div>              
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Section 3 -->
+<div class="section-bg-7">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 order-2 order-md-1 sub-section-2">
+                <div class="text-black p-3 d-flex flex-column justify-content-center align-items-start">
+                    <h1 class="text-left my-4">Notre Equipe</h1>
+                    <p class="text-justify mb-4 fs-5">Nous croyons en la qualité, la fraîcheur et la variété. Chaque plat est préparé avec amour, en utilisant les ingrédients les plus frais pour garantir une expérience gustative exceptionnelle.</p>
+                    <ul class="text-left">    
+                        <li>Réservations : "Planifiez votre prochaine expérience culinaire chez nous. Réservez facilement en ligne ou par téléphone. Nous sommes impatients de vous accueillir."</li>
+                        <li>Événements Privés : "Votre événement mérite un cadre et un menu à la hauteur. Découvrez nos offres personnalisées pour rendre votre événement inoubliable."</li>
+                        <li>Catering : "Apportez la signature de [Nom du Restaurant] à votre prochain événement. Explorez nos options de catering, conçues pour impressionner vos invités."</li>
+                    </ul>
+                </div>            
+            </div>
+            <div class="col-md-6 order-1 order-md-2">
+                <img src="{% static 'images/43346.jpg' %}" alt="wff" class="img-fluid d-block d-md-none full-img" />
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

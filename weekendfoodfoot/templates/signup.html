@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class=" d-none d-md-block section-bg-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 sub-section-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <h5 class="card-header text-center">Inscription</h5>
+                        <div class="card-body">
+                            <!-- Afficher les messages -->
+                            {% if messages %}
+                            <div class="alert alert-dismissible fade show" role="alert">
+                                {% for message in messages %}
+                                <div {% if message.tags %}class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+                                {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endif %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                <div class="form-group mb-3">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in field.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>                        
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary btn-readmore">S'inscrire</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class=" d-block d-md-none section-bg-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <div class="card">
+                        <h5 class="card-header text-center">Inscription</h5>
+                        <div class="card-body">
+                            <!-- Afficher les messages -->
+                            {% if messages %}
+                            <div class="alert alert-dismissible fade show" role="alert">
+                                {% for message in messages %}
+                                <div {% if message.tags %}class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+                                {% endfor %}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            {% endif %}
+                            <form method="post">
+                                {% csrf_token %}
+                                {% for field in form %}
+                                <div class="form-group mb-3">
+                                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {% for error in field.errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>                        
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary btn-readmore">S'inscrire</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

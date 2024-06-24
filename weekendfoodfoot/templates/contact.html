@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h1 class="mb-4">Contactez Nous</h1>
+            <div id="confirmation-message" class="alert alert-success d-none" role="alert">
+                Votre message a été envoyé avec succès.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <p>Des questions ou des demandes spéciales ? N'hésitez pas à nous contacter via notre formulaire. <a href="tel:0292515600">02 9251 5600</a> or email us at <a href="mailto:mvogtsinga@gmail.com">mvogtsinga@gmail.com</a></p>
+            <p>Nous vous répondrons dans les plus brefs délais</p>
+
+            <form id="contact-form" method="">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="first-name" class="form-label">Prénom</label>
+                    <input type="text" class="form-control" id="first-name" name="first_name">
+                </div>
+                <div class="mb-3">
+                    <label for="last-name" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="last-name" name="last_name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email*</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="contact-number" class="form-label">Numéro de téléphone*</label>
+                    <input type="text" class="form-control" id="contact-number" name="contact_number" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message*</label>
+                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const form = document.getElementById('contact-form');
+        const confirmationMessage = document.getElementById('confirmation-message');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault(); // Empêcher la soumission du formulaire
+
+            // Afficher le message de confirmation
+            confirmationMessage.classList.remove('d-none');
+
+            // Réinitialiser le formulaire
+            setTimeout(() => {
+                form.reset();
+            }, 1000); // Délai en millisecondes (ici 1 seconde)
+        });
+    });
+</script>
+
+{% endblock %}
+

@@ -1,0 +1,16 @@
+/* custom_admin.css */
+body {
+    background-color: #4b8bbe; /* Exemple: Changer la couleur de fond */
+}
+
+#header {
+    background-color: #2e3b4e; /* Changer la couleur de l'entête */
+}
+
+#header h1 {
+    color: #f1c40f; /* Changer la couleur du texte de l'entête */
+}
+
+#header .welcome {
+    color: #ecf0f1; /* Changer la couleur du texte de bienvenue */
+}

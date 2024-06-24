@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Réservation annulée</h3>
+    <p>Votre réservation a été annulée avec succès.</p>
+    <a href="{% url 'account' %}" class="btn btn-primary">Retour à mon compte</a>
+</div>
+{% endblock %}
